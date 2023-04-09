@@ -197,17 +197,12 @@ def pregunta_10():
     """
 
     data = pd.read_csv('tbl0.tsv', sep='\t')
-    dfaux = data.groupby('_c1')['_c2'].apply(list)
-    df1 = pd.DataFrame()
-    df1['_c1'] = dfaux.keys()
-    df1['_c2'] = [elem for elem in dfaux]
-    df1['_c2'] = [':'.join(str(v) for v in sorted(elem)) for elem in df1['_c2']]
+    data.sort_values(by=['_c1','_c2'],inplace=True)
+    data._c2=data._c2.astype(str)
+    tb=data.groupby(['_c1'])['_c2'].apply(':'.join).reset_index()
+    tb.set_index('_c1',inplace=True)
+    return tb
 
-
-    return df1
-
-a = pregunta_10()
-print(a)
 
 def pregunta_11():
     """
